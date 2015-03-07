@@ -1,7 +1,38 @@
-#info {
-	background: url(images/dollar.jpg) no-repeat center center fixed;
-	-webkit-background-size: cover;
-	-moz-background-size: cover;
-	-o-background-size: cover;
-	background-size: cover;
+body {
+	position: absolute;
+	font-family: Helvetica, sans-serif;
+}
+
+.prettytext {
+	margin: 5px;
+	display: inline;
+	color: green;
+}
+
+#display {
+	font-size: 5em;
+}
+
+#mps {
+	font-size: 3.5em;
+	color: chartreuse;
+}
+
+#basicmoney {
+	border-radius: 10px;
+	color: white;
+	background-color: green;
+	border-color: green;
+	font-size: 2em;
+}
+
+#upgrades li{
+	border: 1.5px dashed greenyellow;
+	border-radius: 10px;
+	display: inline-block;
+	background-color: chartreuse;
+	color: green;
+	text-align: center;
+	list-style: none;
+	padding: 4.5px;
 }

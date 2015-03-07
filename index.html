@@ -7,13 +7,21 @@
 </head>
 <body>
 	<div id="info">
-		<h1 onclick="addMoney()" id="display" />
+		<h1 id="display" class="prettytext">0</h1>
+		<h5 id="mps" class="prettytext">0</h5>
 	</div>
+
 	<div id="clickable">
-		<button onclick="addMoney()">Get Money</button>
+		<button onclick="addMoney()" id="basicmoney">Get Money</button>
 	</div>
-	<ul id="generators">
-		<li id="firstgen" onclick="makeGenerator('My First Generator', 1, 50)">First Generator</li>
-	</ul>
+
+	<div id="upgrades">
+		<ul id="generators">
+			<li onclick="makeGenerator('My First Generator', 1, 10)">First Generator [€10] [€1/S]</li>
+			<li onclick="makeGenerator('Better Faster Generator', 10, 100)">Better Faster Generator [€100] [€10/S]</li>
+			<li onclick="makeGenerator('Slower Than Light', 500, 100)">STL Travel [€1000] [€500/S]</li>
+			<br/>
+		</ul>
+	</div>
 </body>
 </html>

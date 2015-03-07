@@ -43,7 +43,13 @@ function activateGen() {
 
 function updateDisplay() {
 	var display = document.getElementById("display");
-	display.innerText = player.money;
+	display.innerText = "€" + player.money;
+	var persecond = document.getElementById("mps");
+	var total = 0;
+	for (var i = 0; i < generators.length; i++) {
+		total += generators[i].mps;
+	};
+	persecond.innerText = "€" + total + "/S";
 }
 
 function initGame() {
