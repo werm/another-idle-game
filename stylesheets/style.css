@@ -26,13 +26,15 @@ body {
 	font-size: 2em;
 }
 
-#upgrades li{
+ul {
+	list-style: none;
+}
+.generator {
 	border: 1.5px dashed greenyellow;
 	border-radius: 10px;
 	display: inline-block;
 	background-color: chartreuse;
 	color: green;
 	text-align: center;
-	list-style: none;
 	padding: 4.5px;
 }
