@@ -112,7 +112,7 @@ function initGame() {
 	setInterval(updateDisplay, 100);
 }
 
-if (generatorRequest) {
+if (generatorTemplates) {
 	window.onload = initGame;
 }
 else {
