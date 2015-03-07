@@ -5,7 +5,7 @@
 	<link rel="stylesheet" type="text/css" href="stylesheets/style.css"/>
 	<link rel="shortcut icon" href="favicon.png"/>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-	<script type="text/javascript" src="scripts/game.js"></script>
+	<script type="text/javascript" src="scripts/game.js"></script>	
 </head>
 <body>
 	<div id="info">
@@ -17,9 +17,15 @@
 		<span onclick="addMoney()" id="basicmoney">Get Money</span>
 	</div>
 
-	<div id="upgrades">
-		<ul id="generators">
-		</ul>
+	<div id="buyable">
+		<div>
+			<h3>Generators <span title="Generators generate a certain amount of money per second.">[?]</span></h3>
+			<ul id="generators"></ul>
+		</div>
+		<div>
+			<h3>Upgrades <span title="Upgrades make your generators stronger">[?]</span></h3>
+			<ul id="upgrades"></ul>
+		</div>
 	</div>
 </body>
 </html>
