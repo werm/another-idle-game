@@ -4,8 +4,7 @@ var player = {
 };
 var generators = [];
 var growthRate = 0.2;
-var generatorTemplates;
-var generatorRequest = $.get("https://mysteriousmagenta.github.io/another-idle-game/JSON/generators.json", {}, function(data) {generatorTemplates = data;});
+var generatorTemplates = $.get("https://mysteriousmagenta.github.io/another-idle-game/JSON/generators.json", {}, function(data) {generatorTemplates = data;});
 
 
 // Helper Functions
