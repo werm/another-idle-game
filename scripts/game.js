@@ -1,12 +1,3 @@
-if (!(window.File && window.FileReader && window.FileList && window.Blob)) {
-	alert("The File API is not supported by your browser, you will not be able to play without that.");
-	var body = $("body")
-	for (var i = 0; i < body.children.length; i++) {
-		var child = body.children[i];
-		child.fadeOut("slow");
-	};
-}
-else {
 var player = {
 	"money": 0
 }
@@ -71,7 +62,10 @@ function makeGeneratorList() {
 	var generatorList = $("#generators");
 	if (generatorList.children.length) {
 		for (var i = 0; i < generatorList.children.length; i++) {
-			generatorList.children[i].remove();
+			var current = $(generatorList.children[i])
+			if (current) {
+				current.remove();
+			}
 		};
 	}
 	for (var i = 0; i < generatorTemplates.length; i++) {
@@ -111,4 +105,3 @@ function initGame() {
 
 
 window.onload = initGame;
-}
