@@ -2,23 +2,10 @@ var player = {
 	"money": 0,
 	"won": false
 };
-var run = false;
 var generators = [];
 var growthRate = 0.2;
 var generatorTemplates;
 var generatorRequest = $.get("https://mysteriousmagenta.github.io/another-idle-game/JSON/generators.json", {}, function(data) {generatorTemplates = data;});
-if (!generatorTemplates) {
-	alert("Was unable to get the JSON generator file, stopping!");
-}
-else {
-	try {
-		generatorTemplates = JSON.parse(generatorTemplates);
-		run = true;
-	}
-	catch (SyntaxError) {
-		alert("Was unable to get proper JSON generator file, stopping!!");
-	}
-}
 
 
 // Helper Functions
@@ -126,6 +113,9 @@ function initGame() {
 	setInterval(updateDisplay, 100);
 }
 
-if (run) {
+if (generatorRequest) {
 	window.onload = initGame;
+}
+else {
+	alert("Wasn't able to get a valid JSON file, aborting!")
 }
