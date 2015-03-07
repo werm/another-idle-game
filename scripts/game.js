@@ -60,9 +60,10 @@ function updateDisplay() {
 
 function makeGeneratorList() {
 	var generatorList = $("#generators");
-	if (generatorList.children.length) {
-		for (var i = 0; i < generatorList.children.length; i++) {
-			var current = $(generatorList.children[i])
+	var oldGenerators = generatorList.children();
+	if (oldGenerators.length) {
+		for (var i = 0; i < oldGenerators.length; i++) {
+			var current = $(oldGenerators[i])
 			if (current) {
 				current.remove();
 			}
