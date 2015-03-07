@@ -4,7 +4,10 @@ var player = {
 };
 var generators = [];
 var growthRate = 0.2;
-var generatorTemplates = $.get("https://mysteriousmagenta.github.io/another-idle-game/JSON/generators.json", {}, function(data) {generatorTemplates = data;});
+var request = new XMLHttpRequest();
+request.open("GET", "https://mysteriousmagenta.github.io/another-idle-game/JSON/generators.json", false);
+request.send(null);
+var generatorTemplates = JSON.parse(request.responseText);
 
 
 // Helper Functions
@@ -23,10 +26,13 @@ function makeGenerator(name) {
 					player.money += +this.mps;
 				}
 			}
-			player.money -= generatorTemplates[i].cost;
-			generators.push(generatorTemplates[i]);
-			generatorTemplates[i].cost = Math.floor(generatorTemplates[i].cost + generatorTemplates[i].cost * growthRate);
-			makeGeneratorList();
+			if (player.money >= generatorTemplates[i].cost) {
+				player.money -= generatorTemplates[i].cost;
+				generators.push(generatorTemplates[i]);
+				generatorTemplates[i].cost = Math.floor(generatorTemplates[i].cost + generatorTemplates[i].cost * growthRate);
+				makeGeneratorList();
+				
+			}
 			return;
 		}
 	};
@@ -81,12 +87,13 @@ function makeGeneratorList() {
 		generatorObj.mouseenter(function() {
 			var jThis = $(this);
 			var newName = jThis.html();
-			if (newName !== jThis.attr("name")) {
+			if (newName === jThis.attr("name")) {
 				newName += " [€" + jThis.attr("cost") + "]";
 				newName += " [€" + jThis.attr("mps") + "/S]";
 				newName += " [" + countGenerators(jThis.attr("name")) + "]"
 				jThis.html(newName);
 			}
+
 		});
 		generatorObj.mouseleave(function() {
 			var jThis = $(this);
@@ -107,9 +114,9 @@ function makeGeneratorList() {
 }
 // Starts the game
 function initGame() {
-	makeGeneratorList();
 	setInterval(activateGen, 1000);
 	setInterval(updateDisplay, 100);
+	makeGeneratorList();
 }
 
 if (generatorTemplates) {
