@@ -1,14 +1,25 @@
 var player = {
-	"money": 0
+	"money": 0,
+	"won": false
+};
+var run = false;
+var generators = [];
+var growthRate = 0.2;
+var generatorTemplates;
+var generatorRequest = $.get("https://mysteriousmagenta.github.io/another-idle-game/JSON/generators.json", {}, function(data) {generatorTemplates = data;});
+if (!generatorTemplates) {
+	alert("Was unable to get the JSON generator file, stopping!");
 }
-var generators = []
-var generatorTemplates = [
-	{"name": "My First Generator", "mps": 1, "cost": 10},
-	{"name": "Better Faster Harder Generator", "mps": 10, "cost": 75},
-	{"name": "STL Generator", "mps": 100, "cost": 500},
-	{"name": "Slightly Less STL Generator", "mps": 250, "cost": 750},
-	{"name": "Steampunk Generator", "mps": 1000, "cost": 1250}
-]
+else {
+	try {
+		generatorTemplates = JSON.parse(generatorTemplates);
+		run = true;
+	}
+	catch (SyntaxError) {
+		alert("Was unable to get proper JSON generator file, stopping!!");
+	}
+}
+
 
 // Helper Functions
 function addMoney(amount) {
@@ -18,17 +29,21 @@ function addMoney(amount) {
 	player.money += amount;
 }
 
-function makeGenerator(name, mps, cost) {
-	if (player.money >= cost) {
-		var newGenerator = {}
-		newGenerator.name = name
-		newGenerator.mps = mps
-		newGenerator.increment = function() {
-			addMoney(this.mps)
+function makeGenerator(name) {
+	for (var i = 0; i < generatorTemplates.length; i++) {
+		if (generatorTemplates[i].name == name) {
+			if (!generatorTemplates[i].increment) {
+				generatorTemplates[i].increment = function() {
+					player.money += +this.mps;
+				}
+			}
+			player.money -= generatorTemplates[i].cost;
+			generators.push(generatorTemplates[i]);
+			generatorTemplates[i].cost = Math.floor(generatorTemplates[i].cost + generatorTemplates[i].cost * growthRate);
+			makeGeneratorList();
+			return;
 		}
-		generators.push(newGenerator);
-		player.money -= cost;
-	}
+	};
 }
 
 function countGenerators(name) {
@@ -61,10 +76,14 @@ function updateDisplay() {
 function makeGeneratorList() {
 	var generatorList = $("#generators");
 	var oldGenerators = generatorList.children();
+	var beingHovered = -1;
 	if (oldGenerators.length) {
 		for (var i = 0; i < oldGenerators.length; i++) {
 			var current = $(oldGenerators[i])
 			if (current) {
+				if (current.html() !== current.attr("name") && beingHovered === -1) {
+					beingHovered = i;
+				}
 				current.remove();
 			}
 		};
@@ -76,10 +95,12 @@ function makeGeneratorList() {
 		generatorObj.mouseenter(function() {
 			var jThis = $(this);
 			var newName = jThis.html();
-			newName += " [€" + jThis.attr("cost") + "]";
-			newName += " [€" + jThis.attr("mps") + "/S]";
-			newName += " [" + countGenerators(jThis.attr("name")) + "]"
-			jThis.html(newName);
+			if (newName !== jThis.attr("name")) {
+				newName += " [€" + jThis.attr("cost") + "]";
+				newName += " [€" + jThis.attr("mps") + "/S]";
+				newName += " [" + countGenerators(jThis.attr("name")) + "]"
+				jThis.html(newName);
+			}
 		});
 		generatorObj.mouseleave(function() {
 			var jThis = $(this);
@@ -87,10 +108,11 @@ function makeGeneratorList() {
 		});
 		generatorObj.click(function() {
 				var jThis = $(this);
-				makeGenerator(jThis.attr("name"), +jThis.attr("mps"), +jThis.attr("cost"));
-				jThis.mouseleave();
-				jThis.mouseenter();
+				makeGenerator(jThis.attr("name"));
 		});
+		if (i === beingHovered) {
+			generatorObj.mouseenter();
+		}
 		generatorList.append(generatorObj);
 		if ((i+1) % 3 === 0) {
 			generatorList.append($("<br/>"))
@@ -104,5 +126,6 @@ function initGame() {
 	setInterval(updateDisplay, 100);
 }
 
-
-window.onload = initGame;
+if (run) {
+	window.onload = initGame;
+}

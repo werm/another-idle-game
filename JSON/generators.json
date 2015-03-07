@@ -1,0 +1,7 @@
+[
+	{"name": "My First Generator", "mps": 1, "cost": 10},
+	{"name": "Better Faster Harder Generator", "mps": 10, "cost": 75},
+	{"name": "STL Generator", "mps": 100, "cost": 500},
+	{"name": "Slightly Less STL Generator", "mps": 250, "cost": 750},
+	{"name": "Steampunk Generator", "mps": 1000, "cost": 1250}
+]
