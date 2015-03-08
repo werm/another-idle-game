@@ -139,7 +139,7 @@ function makeTooltips() {
 
 // Cookie handling
 function getMoneyCookie() {
-	var money = $.cookie("money");
+	var money = document.cookie.substr(document.cookie.indexOf("money=")+"money=".length, document.cookie.length);
 	if (money) {
 		player.money = +money;
 		if (player.money === NaN) {
@@ -149,7 +149,7 @@ function getMoneyCookie() {
 }
 
 function setMoneyCookie() {
-	$.cookie("money", player.money);
+	document.cookie = "money=" + player.money
 }
 // Starts the game
 function initGame() {
