@@ -163,7 +163,6 @@ function setMoneyCookie() {
 	};
 	buildingInfo = buildingInfo.substr(0, buildingInfo.length-1);
 	infoString += buildingInfo;
-	console.log(cookieString + expiryDate + infoString + expiryDate);
 	document.cookie = cookieString + expiryDate + infoString + expiryDate
 }
 
