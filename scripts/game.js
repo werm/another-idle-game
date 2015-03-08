@@ -3,7 +3,14 @@ var player = {
 	"won": false
 };
 var generators = [];
-
+// Some variables os that they are global laters.
+var generatorTemplates 
+var growthRate
+var winningMoney 
+var startingCash 
+var generatorSeconds 
+var displaySeconds
+var cookieSeconds
 
 
 // Helper Functions
@@ -169,12 +176,12 @@ function initGame() {
 
 $.when($.getJSON('https://mysteriousmagenta.github.io/another-idle-game/JSON/data.json'), $.getJSON('https://mysteriousmagenta.github.io/another-idle-game/JSON/generators.json'))
 .done(function(ret1, ret2) {
-	var generatorTemplates = ret2[0];
-	var growthRate = ret1.growthRate
-	var winningMoney = ret1.winningMoney;
-	var startingCash = ret1.startingCash;
-	var generatorSeconds = ret1.generatorSeconds;
-	var displaySeconds = ret1.displaySeconds;
-	var cookieSeconds = ret1.cookieSeconds;
+	generatorTemplates = ret2[0];
+	growthRate = ret1.growthRate
+	winningMoney = ret1.winningMoney;
+	startingCash = ret1.startingCash;
+	generatorSeconds = ret1.generatorSeconds;
+	displaySeconds = ret1.displaySeconds;
+	cookieSeconds = ret1.cookieSeconds;
 	initGame();
 });
