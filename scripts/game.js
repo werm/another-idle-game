@@ -169,11 +169,11 @@ function initGame() {
 $.when($.getJSON('https://mysteriousmagenta.github.io/another-idle-game/JSON/data.json'), $.getJSON('https://mysteriousmagenta.github.io/another-idle-game/JSON/generators.json'))
 .done(function(ret1, ret2) {
 	generatorTemplates = ret2[0];
-	growthRate = ret1.growthRate
-	winningMoney = ret1.winningMoney;
-	startingCash = ret1.startingCash;
-	generatorSeconds = ret1.generatorSeconds;
-	displaySeconds = ret1.displaySeconds;
-	cookieSeconds = ret1.cookieSeconds;
+	growthRate = ret1[0].growthRate
+	winningMoney = ret1[0].winningMoney;
+	startingCash = ret1[0].startingCash;
+	generatorSeconds = ret1[0].generatorSeconds;
+	displaySeconds = ret1[0].displaySeconds;
+	cookieSeconds = ret1[0].cookieSeconds;
 	initGame();
 });
