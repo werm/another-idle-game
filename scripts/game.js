@@ -141,10 +141,9 @@ function makeTooltips() {
 function getMoneyCookie() {
 	var money = document.cookie.substr(document.cookie.indexOf("money=")+"money=".length, document.cookie.length);
 	if (money) {
-		player.money = +money;
-		if (player.money === NaN) {
-			player.money = 0;
-		}
+		console.log(money);
+		player.money = +(+money || "0");
+		
 	}
 }
 
