@@ -13,14 +13,6 @@ var displaySeconds
 var cookieSeconds
 
 
-// Helper Functions
-function addMoney(amount) {
-	if (amount === undefined || amount === null) {
-		amount = 1;
-	}
-	player.money += amount;
-}
-
 function makeGenerator(name) {
 	var i;
 	for (i = 0; i < generatorTemplates.length; i++) {
