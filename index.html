@@ -4,6 +4,8 @@
 	<title>Another Idle Game</title>
 	<link rel="stylesheet" type="text/css" href="stylesheets/style.css"/>
 	<link rel="shortcut icon" href="favicon.png"/>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+	<script type="text/javascript" src="scripts/game.js"></script>	
 </head>
 <body>
 	<div id="info">
@@ -12,7 +14,7 @@
 	</div>
 
 	<div id="clickable">
-		<span onclick="addMoney(1)" id="basicmoney">Get Money</span>
+		<span onclick="addMoney()" id="basicmoney">Get Money</span>
 	</div>
 
 	<div id="buyable">
@@ -25,7 +27,5 @@
 			<ul id="upgrades"></ul>
 		</div>
 	</div>
-	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-	<script type="text/javascript" src="scripts/game.js"></script>
 </body>
 </html>

@@ -1,28 +1,28 @@
-// Request for the data
+var player = {
+	"money": 0,
+	"won": false
+};
+var generators = [];
+// New feature, now you can just edit the json file to change growth rate, etc. Makes it simpler to manage.
 var dataRequest = new XMLHttpRequest();
 dataRequest.open("GET", "https://mysteriousmagenta.github.io/another-idle-game/JSON/data.json",false);
 dataRequest.send(null);
-// Request for the generators;
-var generatorRequest = new XMLHttpRequest();
-generatorRequest.open("GET", "https://mysteriousmagenta.github.io/another-idle-game/JSON/generators.json", false);
-generatorRequest.send(null);
-
-// The data response, which stores important information.
 var dataJSON = JSON.parse(dataRequest.responseText);
+
+// The actual variables
 var growthRate = dataJSON.growthRate;
 var winningMoney = dataJSON.winningMoney;
 var startingCash = dataJSON.startingCash;
-var generatorSeconds = dataJSON.generatorSeconds;
-var displaySeconds = dataJSON.displaySeconds;
-var cookieSeconds = dataJSON.cookieSeconds;
-// THe templates for the generators
-var generatorTemplates = JSON.parse(generatorRequest.responseText);
-var player = {
-	"money": 0,
-	"generators": [],
-	"won": false,
-}
 
+
+// The templates for generators and how to build them. DNA for Generators, you can call it.
+var generatorRequest = new XMLHttpRequest();
+generatorRequest.open("GET", "https://mysteriousmagenta.github.io/another-idle-game/JSON/generators.json", false);
+generatorRequest.send(null);
+var generatorTemplates = JSON.parse(generatorRequest.responseText);
+
+
+// Helper Functions
 function addMoney(amount) {
 	if (amount === undefined || amount === null) {
 		amount = 1;
@@ -31,108 +31,162 @@ function addMoney(amount) {
 }
 
 function makeGenerator(name) {
-	for (var i = 0; i < generatorTemplates.length; i++) {
-		var generator = generatorTemplates[i];
-		if (generator.name === name) {
-			if (player.money >= generator.cost) {
-				if (!generator.increment) {
-					generatorTemplates[i].increment = function() {
-						player.money += this.mps;
-					}
+	var i;
+	for (i = 0; i < generatorTemplates.length; i++) {
+		if (generatorTemplates[i].name == name) {
+			if (!generatorTemplates[i].increment) {
+				generatorTemplates[i].increment = function() {
+					player.money += +this.mps;
 				}
-				player.generators.push(generatorTemplates[i]);
-				makeGeneratorList();
 			}
-			break
+			if (player.money >= generatorTemplates[i].cost) {
+				player.money -= generatorTemplates[i].cost;
+				generators.push(generatorTemplates[i]);
+				generatorTemplates[i].cost = Math.floor(generatorTemplates[i].cost + generatorTemplates[i].cost * growthRate);
+				makeGeneratorList();
+				
+			}
+			return;
 		}
 	};
 }
 
 function countGenerators(name) {
 	var count = 0;
-	for (var i = 0; i < player.generators.length; i++) {
-		if (player.generators[i].name === name) {
-			count++;
+	var i;
+	for (i = 0; i < generators.length; i++) {
+		if (generators[i].name == name) {
+			count++
 		}
 	};
 	return count;
 }
 
-function makeGeneratorList() {
-	var generatorList = $("#generators")
-	var hovering = -1;
-	for (var i = 0; i < generatorList.length; i++) {
-		var generator = generatorList[i];
-		if (generator.html() != generator.attr("name") && hovering === -1) {
-			hovering = i;
-		}		
-		generator.remove();
-	};
-	for (var i = 0; i < generatorTemplates.length; i++) {
-		var chosenGenerator = generatorTemplates[i];
-		var HTMLGenerator = $("<span><span/>");
-		HTMLGenerator.attr("cost", chosenGenerator.cost);
-		HTMLGenerator.attr("name", chosenGenerator.name);
-		HTMLGenerator.attr("mps", chosenGenerator.mps);
-		HTMLGenerator.mouseenter(function() {
-			var jThis = $(this);
-			var newName = jThis.html();
-			if (newName === jThis.attr("name")) {
-				newName += "[€" + jThis.attr("cost") + "]";
-				newName += "[€" + jThis.attr("mps") + "/S]";
-				newName += "[" + countGenerators(jThis.attr("name")) + "]"
-			}
-			jThis.html(newName);
-		});
-		HTMLGenerator.mouseleave(function() {
-			var jThis = $(this);
-			jThis.html(jThis.attr("name"));
-		});
-		if (hovering === i) {
-			HTMLGenerator.mouseenter();
-		}
-		generatorList.append(HTMLGenerator);
-	};
-}
-
 function activateGen() {
-	for (var i = 0; i < player.generators.length; i++) {
-		player.generators[i].increment();
-	};
-}
-
-function getMoney() {
-	var cookieIndex = document.cookie.index("money=") + "money=".length;
-	var cookieString = document.cookie.substr(cookieIndex, document.cookie.length);
-	for (var i = 0; i < cookieString.length; i++) {
-		if (cookieString[i] === ";") {
-			cookieString = cookieString.substr(0, i);
-			break
-		}
-	};
-	console.log("Money Cookie: " + cookieString);
-	player.money = +cookieString || startingCash;
-}
-
-function setCookie() {
-	document.cookie = "money=" + player.money + ";expires=Fri, 31 Dec 9999 23:59:59 GMT"
+	var generator;
+	for (var i=0; i < generators.length; i++) {
+		generator = generators[i]
+		generator.increment();
+	}
 }
 
 function updateDisplay() {
-	var display = $("#display");
-	display.html("€" + player.money);
-	var display2 = $("#mps")
-	var count = 0;
-	for (var i = 0; i < player.generators.length; i++) {
-		count += player.generators[i].mps;
+	$("#display").html("€" + player.money);
+	var total = 0;
+	for (var i = 0; i < generators.length; i++) {
+		total += generators[i].mps;
 	};
-	display2.html("€" + count + "/S");
+	$("#mps").html("€" + total + "/S");
 }
+
+function makeGeneratorList() {
+	var generatorList = $("#generators");
+	var oldGenerators = generatorList.children();
+	var beingHovered = -1;
+	var extra = 0;
+	if (oldGenerators.length) {
+		for (var i = 0; i < oldGenerators.length; i++) {
+			var current = $(oldGenerators[i])
+			if (current) {
+				if (current.attr("name") === undefined) {
+					extra++;
+				}
+				else if (beingHovered === -1 && current.html() !== current.attr("name")) {
+					beingHovered = i-extra;
+				}
+				current.remove();
+			}
+		};
+	}
+	for (var i = 0; i < generatorTemplates.length; i++) {
+		var generator = generatorTemplates[i];
+		var generatorObj = $('<li class="generator" name="'+ generator.name + '" cost="' + generator.cost + '" mps="'+ generator.mps + '">' + generator.name + "</li>")
+		if (generator["hover"]) {
+			generatorObj.attr("title", generator["hover"]);
+		}
+		generatorObj.mouseenter(function() {
+			var jThis = $(this);
+			var newName = jThis.html();
+			if (newName === jThis.attr("name")) {
+				newName += " [€" + jThis.attr("cost") + "]";
+				newName += " [€" + jThis.attr("mps") + "/S]";
+				newName += " [" + countGenerators(jThis.attr("name")) + "]"
+				jThis.html(newName);
+			}
+
+		});
+		generatorObj.mouseleave(function() {
+			var jThis = $(this);
+			jThis.html(jThis.attr("name"));
+		});
+		generatorObj.click(function() {
+			var jThis = $(this);
+			makeGenerator(jThis.attr("name"));
+		});
+		if (i === beingHovered) {
+			generatorObj.mouseenter();
+		}
+		generatorList.append(generatorObj);
+		if ((i+1) % 3 === 0) {
+			generatorList.append($("<br/>"))
+		}
+	};
+}
+
+function makeTooltips() {
+	var expls = $(".expl");
+	for (var i = 0; i < expls.length; i++) {
+		var expl = $(expls[i]);
+		expl.click(function() {
+			var jThis = $(this);
+			if (jThis.html() !== jThis.attr("title")) {
+				jThis.html("[" + jThis.attr("title") + "]");
+			}
+			else {
+				jThis.html("[?]");
+			}
+		})
+		expl.mouseleave(function() {
+			var jThis = $(this);
+			jThis.html("[?]");
+		});
+	};
+}
+
+// Cookie handling
+function getMoneyCookie() {
+	var money = document.cookie.substr(document.cookie.indexOf("money=")+"money=".length, document.cookie.length);
+	if (money) {
+		for (var i = 0; i < money.length; i++) {
+			if (money[i]===";") {
+				money = money.substr(0, i);
+				break
+			}
+		};
+		// Makes it default to whatever is in the startingCash variable if we have an invalid money cookie.
+		player.money = +(+money || startingCash.toString())
+	}
+}
+
+function setMoneyCookie() {
+	var cookieString = "money=" + player.money
+	var expiryDate = ";expires=Fri, 31 Dec 9999 23:59:59 GMT"
+	var infoString =";info" + encodeURI(generators)  // To be used later.
+	document.cookie = cookieString + expiryDate + infoString + expiryDate
+}
+// Starts the game
 function initGame() {
-	getMoney();
-	updateDisplay();
 	makeGeneratorList();
-	setInterval(activateGen, generatorSeconds*1000);
-	setInterval(updateDisplay, (displaySeconds*1000)/10);
-	setInterval(setCookie, cookieSeconds*1000);
+	makeTooltips();
+	getMoneyCookie();
+	setInterval(activateGen, 1*1000);
+	setInterval(updateDisplay, 1000/10);
+	setInterval(setMoneyCookie, 10*1000);
+}
+
+if (generatorTemplates) {
+	window.onload = initGame;
+}
+else {
+	alert("Wasn't able to get a valid JSON file, aborting!")
 }
