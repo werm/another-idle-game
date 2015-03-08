@@ -136,12 +136,26 @@ function makeTooltips() {
 		});
 	};
 }
+
+// Cookie handling
+function getMoneyCookie() {
+	var money = document.cookie;
+	money = money.replace("money=(.*?)", "\0")
+	console.log(money);
+}
+
+function setMoneyCookie() {
+	document.cookie = "money=" + player.money + "; path=/";
+	return document.cookie;
+}
 // Starts the game
 function initGame() {
-	setInterval(activateGen, 1000);
-	setInterval(updateDisplay, 100);
 	makeGeneratorList();
 	makeTooltips();
+	getMoneyCookie();
+	setInterval(activateGen, 1000);
+	setInterval(updateDisplay, 100);
+	setInterval(setMoneyCookie, 1000 * 60 * 5);
 }
 
 if (generatorTemplates) {
