@@ -69,12 +69,16 @@ function makeGeneratorList() {
 	var generatorList = $("#generators");
 	var oldGenerators = generatorList.children();
 	var beingHovered = -1;
+	var extra = 0;
 	if (oldGenerators.length) {
 		for (var i = 0; i < oldGenerators.length; i++) {
 			var current = $(oldGenerators[i])
 			if (current) {
-				if (current.html() !== current.attr("name") && beingHovered === -1) {
-					beingHovered = i;
+				if (current.attr("name") === undefined) {
+					extra++;
+				}
+				else if (beingHovered === -1 && current.html() !== current.attr("name")) {
+					beingHovered = i-extra;
 				}
 				current.remove();
 			}
@@ -100,8 +104,8 @@ function makeGeneratorList() {
 			jThis.html(jThis.attr("name"));
 		});
 		generatorObj.click(function() {
-				var jThis = $(this);
-				makeGenerator(jThis.attr("name"));
+			var jThis = $(this);
+			makeGenerator(jThis.attr("name"));
 		});
 		if (i === beingHovered) {
 			generatorObj.mouseenter();
@@ -112,11 +116,32 @@ function makeGeneratorList() {
 		}
 	};
 }
+
+function makeTooltips() {
+	var expls = $(".expl");
+	for (var i = 0; i < expls.length; i++) {
+		var expl = $(expls[i]);
+		expl.click(function() {
+			var jThis = $(this);
+			if (jThis.html() !== jThis.attr("title")) {
+				jThis.html("[" + jThis.attr("title") + "]");
+			}
+			else {
+				jThis.html("[?]");
+			}
+		})
+		expl.mouseleave(function() {
+			var jThis = $(this);
+			jThis.html("[?]");
+		});
+	};
+}
 // Starts the game
 function initGame() {
 	setInterval(activateGen, 1000);
 	setInterval(updateDisplay, 100);
 	makeGeneratorList();
+	makeTooltips();
 }
 
 if (generatorTemplates) {

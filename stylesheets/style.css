@@ -41,7 +41,7 @@ ul {
 }
 
 /* Makes basicmoney nonselectable */
-#basicmoney {
+#basicmoney, .generator, .upgrade {
 	-webkit-touch-callout: none;
     -webkit-user-select: none;
     -khtml-user-select: none;
