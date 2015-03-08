@@ -68,18 +68,14 @@ function makeGeneratorList() {
 	var oldGenerators = generatorList.children();
 	var beingHovered = -1;
 	var extra = 0;
-	if (oldGenerators.length) {
+	if (oldGenerators) {
 		for (var i = 0; i < oldGenerators.length; i++) {
-			var current = $(oldGenerators[i])
-			if (current) {
-				if (current.attr("name") === undefined) {
-					extra++;
+			for (var i2 = 0; i2 < oldGenerators[i].children.length; i2++) {
+				if (oldGenerators[i].children[i2].html() !== oldGenerators[i].children[i2].attr("name") && beingHovered === -1) {
+					beingHovered = i2;
 				}
-				else if (beingHovered === -1 && current.html() !== current.attr("name")) {
-					beingHovered = i-extra;
-				}
-				current.remove();
-			}
+			};
+			oldGenerators[i].remove();
 		};
 	}
 	var tableColumn = $("<tr></tr>");
@@ -160,7 +156,15 @@ function getMoneyCookie() {
 function setMoneyCookie() {
 	var cookieString = "money=" + player.money
 	var expiryDate = ";expires=Fri, 31 Dec 9999 23:59:59 GMT"
-	document.cookie = cookieString + expiryDate
+	var infoString = ";info="
+	var buildingInfo = "";
+	for (var i = 0; i < generatorTemplates.length; i++) {
+		buildingInfo += countGenerators(generatorTemplates[i].name) + "|";
+	};
+	buildingInfo = buildingInfo.substr(0, buildingInfo.length-1);
+	infoString += buildingInfo;
+	console.log(cookieString + expiryDate + infoString + expiryDate);
+	document.cookie = cookieString + expiryDate + infoString + expiryDate
 }
 
 function saveButtons() {
