@@ -32,11 +32,8 @@ body {
 	color: darkgray;
 }
 
-div h3 {
-	margin-left: 0px;
-}
 
-#settings {
+#settings span {
 	margin-left: 40px;
 }
 ul {
