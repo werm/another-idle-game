@@ -24,6 +24,7 @@ body {
 
 #save,#load {
 	font-size: 1.5em;
+	margin-left: 40px;
 }
 
 #load {
@@ -33,9 +34,6 @@ body {
 }
 
 
-#settings span {
-	margin-left: 40px;
-}
 ul {
 	list-style: none;
 }
