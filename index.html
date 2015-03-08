@@ -14,18 +14,24 @@
 	</div>
 
 	<div id="clickable">
-		<span onclick="player.money++" id="basicmoney">Get Money</span>
+		<span onclick="player.money++" id="basicmoney" class="noselect fakebutton">Get Money</span>
+		
 	</div>
 
 	<div id="buyable">
 		<div>
 			<h3>Generators <span class="expl" title="Generators generate a certain amount of money per second.">[?]</span></h3>
-			<ul id="generators"></ul>
+			<ul class="noselect" id="generators"></ul>
 		</div>
 		<div>
 			<h3>Upgrades <span class="expl" title="Upgrades make your generators stronger">[?]</span></h3>
-			<ul id="upgrades"></ul>
+			<ul class="noselect" id="upgrades"></ul>
 		</div>
+	</div>
+	<div id="settings">
+		<h3>Settings <span class="expl" title="You can finetune your game here.">[?]</span></h3>
+		<span id="load" class="noselect fakebutton">Load Game</span>
+		<span id="save" class="noselect fakebutton">Save Game</span>
 	</div>
 </body>
 </html>

@@ -4,13 +4,14 @@ var player = {
 };
 var generators = [];
 // Some variables os that they are global laters.
-var generatorTemplates 
-var growthRate
-var winningMoney 
-var startingCash 
-var generatorSeconds 
-var displaySeconds
-var cookieSeconds
+var generatorTemplates;
+var growthRate;
+var winningMoney;
+var startingCash;
+var generatorSeconds; 
+var displaySeconds;
+var cookieSeconds;
+var cookieInterval;
 
 
 function makeGenerator(name) {
@@ -156,14 +157,25 @@ function setMoneyCookie() {
 	var expiryDate = ";expires=Fri, 31 Dec 9999 23:59:59 GMT"
 	document.cookie = cookieString + expiryDate
 }
+
+function saveButtons() {
+	var save = $("#save");
+	save.click(setMoneyCookie);
+	var load = $("#load");
+	load.click(function() {
+		player.money = 0
+		getMoneyCookie();
+	});
+}
 // Starts the game
 function initGame() {
+	saveButtons();
 	makeGeneratorList();
 	makeTooltips();
 	getMoneyCookie();
 	setInterval(activateGen, generatorSeconds*1000);
 	setInterval(updateDisplay, displaySeconds/10);
-	setInterval(setMoneyCookie, cookieSeconds*1000);
+	cookieInterval = setInterval(setMoneyCookie, cookieSeconds*1000);
 }
 
 $.when($.getJSON('https://mysteriousmagenta.github.io/another-idle-game/JSON/data.json'), $.getJSON('https://mysteriousmagenta.github.io/another-idle-game/JSON/generators.json'))

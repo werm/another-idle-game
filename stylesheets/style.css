@@ -19,14 +19,16 @@ body {
 }
 
 #basicmoney {
-	border-radius: 10px;
-	color: white;
-	background-color: green;
-	border-color: green;
 	font-size: 2em;
-	padding: 6px;
 }
 
+#save,#load {
+	font-size: 1.5em;
+}
+
+#settings {
+	margin-left: 40px;
+}
 ul {
 	list-style: none;
 }
@@ -40,8 +42,15 @@ ul {
 	padding: 4.5px;
 }
 
-/* Makes basicmoney nonselectable */
-#basicmoney, .generator, .upgrade {
+.fakebutton {
+	border-radius: 10px;
+	color: white;
+	background-color: green;
+	border-color: green;
+	padding: 6px;
+}
+
+.noselect {
 	-webkit-touch-callout: none;
     -webkit-user-select: none;
     -khtml-user-select: none;
