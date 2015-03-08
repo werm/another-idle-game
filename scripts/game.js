@@ -152,8 +152,7 @@ function getMoneyCookie() {
 }
 
 function setMoneyCookie() {
-	document.cookie = "money=" + player.money
-	document.cookie = "info=" + encodeURI(generators.toString());
+	document.cookie = "money=" + player.money + ";info=" + encodeURI(generators)
 }
 // Starts the game
 function initGame() {
