@@ -3,11 +3,23 @@ var player = {
 	"won": false
 };
 var generators = [];
-var growthRate = 0.2;
-var request = new XMLHttpRequest();
-request.open("GET", "https://mysteriousmagenta.github.io/another-idle-game/JSON/generators.json", false);
-request.send(null);
-var generatorTemplates = JSON.parse(request.responseText);
+// New feature, now you can just edit the json file to change growth rate, etc. Makes it simpler to manage.
+var dataRequest = new XMLHttpRequest();
+dataRequest.open("GET", "https://mysteriousmagenta.github.io/another-idle-game/JSON/data.json",false)
+dataRequest.send(null);
+var dataJSON = JSON.parse(dataRequest.responseText);
+
+// The actual variables
+var growthRate = dataJSON["growthRate"];
+var winningMoney = dataJSON["winningMoney"];
+var startingCash = dataJSON["startingCash"];
+
+
+// The templates for generators and how to build them. DNA for Generators, you can call it.
+var generatorRequest = new XMLHttpRequest();
+generatorRequest.open("GET", "https://mysteriousmagenta.github.io/another-idle-game/JSON/generators.json", false);
+generatorRequest.send(null);
+var generatorTemplates = JSON.parse(generatorRequest.responseText);
 
 
 // Helper Functions
@@ -87,7 +99,9 @@ function makeGeneratorList() {
 	for (var i = 0; i < generatorTemplates.length; i++) {
 		var generator = generatorTemplates[i];
 		var generatorObj = $('<li class="generator" name="'+ generator.name + '" cost="' + generator.cost + '" mps="'+ generator.mps + '">' + generator.name + "</li>")
-
+		if (generator["hover"]) {
+			generatorObj.attr("title", generator["hover"]);
+		}
 		generatorObj.mouseenter(function() {
 			var jThis = $(this);
 			var newName = jThis.html();
@@ -147,12 +161,16 @@ function getMoneyCookie() {
 				break
 			}
 		};
-		player.money = +(+money || "0")
+		// Makes it default to whatever is in the startingCash variable if we have an invalid money cookie.
+		player.money = +(+money || startingCash.toString())
 	}
 }
 
 function setMoneyCookie() {
-	document.cookie = "money=" + player.money + ";info=" + encodeURI(generators)
+	var cookieString = "money=" + player.money
+	var expiryDate = ";expires=Fri, 31 Dec 9999 23:59:59 GMT"
+	var infoString =";info" + encodeURI(generators)  // To be used later.
+	document.cookie = cookieString + expiryDate + infoString + expiryDate
 }
 // Starts the game
 function initGame() {

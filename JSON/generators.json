@@ -1,7 +1,7 @@
 [
-	{"name": "My First Generator", "mps": 1, "cost": 10},
-	{"name": "Better Faster Harder Generator", "mps": 10, "cost": 75},
-	{"name": "STL Generator", "mps": 100, "cost": 500},
-	{"name": "Slightly Less STL Generator", "mps": 250, "cost": 750},
-	{"name": "Steampunk Generator", "mps": 1000, "cost": 1250}
+	{"name": "Grandma's Printer", "hover": "You're not sure how this still works...", "mps": 1, "cost": 100},
+	{"name": "NASA Computer", "hover": "Sure, it's powerful, but the fact that you're using that printer with it makes it invalid.", "mps": 20, "cost": 1750},
+	{"name": "Laser Printer", "hover": "We're talking now!", "mps": 50, "cost": 3000},
+	{"name": "Rosetta Rocket", "hover": "Slightly reduced efficiency due to it being on Mars.", "mps": 250, "cost": 5000},
+	{"name": "Steampunk Rocket", "hover": "What the hell is Steampunk anyways?", "mps": 1000, "cost": 10000}
 ]
