@@ -5,14 +5,14 @@ var player = {
 var generators = [];
 // New feature, now you can just edit the json file to change growth rate, etc. Makes it simpler to manage.
 var dataRequest = new XMLHttpRequest();
-dataRequest.open("GET", "https://mysteriousmagenta.github.io/another-idle-game/JSON/data.json",false)
+dataRequest.open("GET", "https://mysteriousmagenta.github.io/another-idle-game/JSON/data.json",false);
 dataRequest.send(null);
 var dataJSON = JSON.parse(dataRequest.responseText);
 
 // The actual variables
-var growthRate = dataJSON["growthRate"];
-var winningMoney = dataJSON["winningMoney"];
-var startingCash = dataJSON["startingCash"];
+var growthRate = dataJSON.growthRate;
+var winningMoney = dataJSON.winningMoney;
+var startingCash = dataJSON.startingCash;
 
 
 // The templates for generators and how to build them. DNA for Generators, you can call it.
@@ -25,13 +25,14 @@ var generatorTemplates = JSON.parse(generatorRequest.responseText);
 // Helper Functions
 function addMoney(amount) {
 	if (amount === undefined || amount === null) {
-		amount = 1
+		amount = 1;
 	}
 	player.money += amount;
 }
 
 function makeGenerator(name) {
-	for (var i = 0; i < generatorTemplates.length; i++) {
+	var i;
+	for (i = 0; i < generatorTemplates.length; i++) {
 		if (generatorTemplates[i].name == name) {
 			if (!generatorTemplates[i].increment) {
 				generatorTemplates[i].increment = function() {
@@ -52,7 +53,8 @@ function makeGenerator(name) {
 
 function countGenerators(name) {
 	var count = 0;
-	for (var i = 0; i < generators.length; i++) {
+	var i;
+	for (i = 0; i < generators.length; i++) {
 		if (generators[i].name == name) {
 			count++
 		}
