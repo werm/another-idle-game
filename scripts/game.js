@@ -161,11 +161,11 @@ function setMoneyCookie() {
 function saveButtons() {
 	var save = $("#save");
 	save.click(setMoneyCookie);
-	var load = $("#load");
+	/*var load = $("#load");
 	load.click(function() {
 		player.money = 0
 		getMoneyCookie();
-	});
+	});*/
 }
 // Starts the game
 function initGame() {

@@ -26,6 +26,12 @@ body {
 	font-size: 1.5em;
 }
 
+#load {
+	background-color: gray;
+	border-color: gray;
+	color: darkgray;
+}
+
 div h3 {
 	margin-left: 0px;
 }
