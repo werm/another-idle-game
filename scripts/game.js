@@ -82,9 +82,11 @@ function makeGeneratorList() {
 			}
 		};
 	}
+	var tableColumn = $("<tr></tr>");
+
 	for (var i = 0; i < generatorTemplates.length; i++) {
 		var generator = generatorTemplates[i];
-		var generatorObj = $('<li class="generator" name="'+ generator.name + '" cost="' + generator.cost + '" mps="'+ generator.mps + '">' + generator.name + "</li>")
+		var generatorObj = $('<td class="generator" name="'+ generator.name + '" cost="' + generator.cost + '" mps="'+ generator.mps + '">' + generator.name + "</td>")
 		if (generator["hover"]) {
 			generatorObj.attr("title", generator["hover"]);
 		}
@@ -110,9 +112,12 @@ function makeGeneratorList() {
 		if (i === beingHovered) {
 			generatorObj.mouseenter();
 		}
-		generatorList.append(generatorObj);
-		if ((i+1) % 3 === 0) {
-			generatorList.append($("<br/>"))
+		tableColumn.append(generatorObj);
+		var familySize = tableColumn.children().length;
+		// So glad this works.
+		if (familySize >= 3 || familySize === generatorTemplates.length-generatorList.children().length*3) {
+			generatorList.append(tableColumn);
+			tableColumn = $("<tr></tr>");
 		}
 	};
 }

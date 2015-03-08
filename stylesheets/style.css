@@ -1,5 +1,4 @@
 body {
-	position: absolute;
 	font-family: Helvetica, sans-serif;
 }
 
@@ -24,7 +23,6 @@ body {
 
 #save,#load {
 	font-size: 1.5em;
-	margin-left: 40px;
 }
 
 #load {
@@ -33,10 +31,10 @@ body {
 	color: darkgray;
 }
 
-
 ul {
 	list-style: none;
 }
+
 .generator {
 	border: 1.5px dashed greenyellow;
 	border-radius: 10px;
