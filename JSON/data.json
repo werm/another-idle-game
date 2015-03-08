@@ -1,7 +1,7 @@
 {
 	"growthRate": 0.25,
 	"winningMoney": 100000000,
-	"startingMoney": 0,
+	"startingCash": 0,
 	"generatorSeconds": 1,
 	"displaySeconds": 1,
 	"cookieSeconds": 10

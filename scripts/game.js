@@ -3,23 +3,7 @@ var player = {
 	"won": false
 };
 var generators = [];
-// New feature, now you can just edit the json file to change growth rate, etc. Makes it simpler to manage.
-var dataRequest = new XMLHttpRequest();
-dataRequest.open("GET", "https://mysteriousmagenta.github.io/another-idle-game/JSON/data.json",false);
-dataRequest.send(null);
-var dataJSON = JSON.parse(dataRequest.responseText);
 
-// The actual variables
-var growthRate = dataJSON.growthRate;
-var winningMoney = dataJSON.winningMoney;
-var startingCash = dataJSON.startingCash;
-
-
-// The templates for generators and how to build them. DNA for Generators, you can call it.
-var generatorRequest = new XMLHttpRequest();
-generatorRequest.open("GET", "https://mysteriousmagenta.github.io/another-idle-game/JSON/generators.json", false);
-generatorRequest.send(null);
-var generatorTemplates = JSON.parse(generatorRequest.responseText);
 
 
 // Helper Functions
@@ -171,22 +155,26 @@ function getMoneyCookie() {
 function setMoneyCookie() {
 	var cookieString = "money=" + player.money
 	var expiryDate = ";expires=Fri, 31 Dec 9999 23:59:59 GMT"
-	var infoString =";info" + encodeURI(generators)  // To be used later.
-	document.cookie = cookieString + expiryDate + infoString + expiryDate
+	document.cookie = cookieString + expiryDate
 }
 // Starts the game
 function initGame() {
 	makeGeneratorList();
 	makeTooltips();
 	getMoneyCookie();
-	setInterval(activateGen, 1*1000);
-	setInterval(updateDisplay, 1000/10);
-	setInterval(setMoneyCookie, 10*1000);
+	setInterval(activateGen, generatorSeconds*1000);
+	setInterval(updateDisplay, displaySeconds/10);
+	setInterval(setMoneyCookie, cookieSeconds*1000);
 }
 
-if (generatorTemplates) {
-	window.onload = initGame;
-}
-else {
-	alert("Wasn't able to get a valid JSON file, aborting!")
-}
+$.when($.getJSON('https://mysteriousmagenta.github.io/another-idle-game/JSON/data.json'), $.getJSON('https://mysteriousmagenta.github.io/another-idle-game/JSON/generators.json'))
+.done(function(ret1, ret2) {
+	var generatorTemplates = ret2[0];
+	var growthRate = ret1.growthRate
+	var winningMoney = ret1.winningMoney;
+	var startingCash = ret1.startingCash;
+	var generatorSeconds = ret1.generatorSeconds;
+	var displaySeconds = ret1.displaySeconds;
+	var cookieSeconds = ret1.cookieSeconds;
+	initGame();
+});
