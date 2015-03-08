@@ -140,8 +140,11 @@ function makeTooltips() {
 // Cookie handling
 function getMoneyCookie() {
 	var money = document.cookie;
-	money = money.replace("money=(.*?)", "\0")
-	console.log(money);
+	money = money.replace(".*?money=(.*?).*?", "\1")
+	if (money) {
+		player.money = +money;
+	}
+	return money;
 }
 
 function setMoneyCookie() {
