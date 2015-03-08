@@ -139,17 +139,17 @@ function makeTooltips() {
 
 // Cookie handling
 function getMoneyCookie() {
-	var money = document.cookie;
-	money = money.replace(".*?money=(.*?).*?", "\1")
+	var money = $.cookie("money");
 	if (money) {
 		player.money = +money;
+		if (player.money === NaN) {
+			player.money = 0;
+		}
 	}
-	return money;
 }
 
 function setMoneyCookie() {
-	document.cookie = "money=" + player.money + "; path=/";
-	return document.cookie;
+	$.cookie("money", player.money);
 }
 // Starts the game
 function initGame() {
