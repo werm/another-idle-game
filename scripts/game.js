@@ -141,23 +141,28 @@ function makeTooltips() {
 function getMoneyCookie() {
 	var money = document.cookie.substr(document.cookie.indexOf("money=")+"money=".length, document.cookie.length);
 	if (money) {
-		console.log(money);
-		player.money = +(+money || "0");
-		
+		for (var i = 0; i < money.length; i++) {
+			if (money[i]===";") {
+				money = money.substr(0, i);
+				break
+			}
+		};
+		player.money = +(+money || "0")
 	}
 }
 
 function setMoneyCookie() {
 	document.cookie = "money=" + player.money
+	document.cookie = "info=" + encodeURI(generators.toString());
 }
 // Starts the game
 function initGame() {
 	makeGeneratorList();
 	makeTooltips();
 	getMoneyCookie();
-	setInterval(activateGen, 1000);
-	setInterval(updateDisplay, 100);
-	setInterval(setMoneyCookie, 1000 * 60 * 5);
+	setInterval(activateGen, 1*1000);
+	setInterval(updateDisplay, 1000/10);
+	setInterval(setMoneyCookie, 10*1000);
 }
 
 if (generatorTemplates) {
