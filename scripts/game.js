@@ -147,18 +147,26 @@ function makeTooltips() {
 // Cookie handling
 function getMoneyCookie() {
 	var money = document.cookie.substr(document.cookie.indexOf("money=")+"money=".length, document.cookie.length);
+	var generatorList = $("#generators td");
 	if (money) {
 		for (var i = 0; i < money.length; i++) {
 			if (money[i]===";") {
 				buildings = money.substr(i+"build=".length+2);
 				money = money.substr(0, i);
-				
-				console.log(buildings);
 				break
 			}
 		};
 		// Makes it default to whatever is in the startingCash variable if we have an invalid money cookie.
 		player.money = +(+money || startingCash.toString())
+		// I'm using index based here, but I think there's a better way. I'm sure I'll find something later.
+		buildings = buildings.split("|");
+		for (var i = 0; i < buildings.length; i++) {
+			var buildingAmount = +buildings[i];
+			var buildingButton = generatorList[i];
+			for (var clicks = 0; clicks < buildingAmount; clicks++) {
+				buildingButton.click();
+			};
+		};
 	}
 }
 
@@ -192,10 +200,10 @@ function buttonSetup() {
 }
 // Starts the game
 function initGame() {
+	getMoneyCookie();
 	buttonSetup();
 	makeGeneratorList();
 	makeTooltips();
-	getMoneyCookie();
 	setInterval(activateGen, generatorSeconds*1000);
 	setInterval(updateDisplay, displaySeconds/10);
 	cookieInterval = setInterval(setMoneyCookie, cookieSeconds*1000);
