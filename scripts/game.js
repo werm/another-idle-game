@@ -161,6 +161,7 @@ function getMoneyCookie() {
 		// I'm using index based here, but I think there's a better way. I'm sure I'll find something later.
 		buildings = buildings.split("|");
 		for (var i = 0; i < buildings.length; i++) {
+			console.log(i, generatorList[i])
 			var buildingAmount = +buildings[i];
 			var buildingButton = generatorList[i];
 			for (var clicks = 0; clicks < buildingAmount; clicks++) {
