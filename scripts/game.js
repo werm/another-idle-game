@@ -150,8 +150,9 @@ function getMoneyCookie() {
 	if (money) {
 		for (var i = 0; i < money.length; i++) {
 			if (money[i]===";") {
-				money = money.substr(0, i);
 				buildings = money.substr(i);
+				money = money.substr(0, i);
+				
 				console.log(buildings);
 				break
 			}
