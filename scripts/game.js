@@ -1,3 +1,4 @@
+$(document).ready(function() {
 var player = {
 	"money": 0,
 	"won": false
@@ -172,7 +173,7 @@ function setMoneyCookie() {
 	document.cookie = cookieString + expiryDate + infoString + expiryDate
 }
 
-function saveButtons() {
+function buttonSetup() {
 	var save = $("#save");
 	save.click(setMoneyCookie);
 	/*var load = $("#load");
@@ -180,10 +181,14 @@ function saveButtons() {
 		player.money = 0
 		getMoneyCookie();
 	});*/
+	var getMoney = $("#basicmoney");
+	getMoney.click(function() {
+		player.money++;
+	});
 }
 // Starts the game
 function initGame() {
-	saveButtons();
+	buttonSetup();
 	makeGeneratorList();
 	makeTooltips();
 	getMoneyCookie();
@@ -202,4 +207,4 @@ $.when($.getJSON('https://mysteriousmagenta.github.io/another-idle-game/JSON/dat
 	displaySeconds = ret1[0].displaySeconds;
 	cookieSeconds = ret1[0].cookieSeconds;
 	initGame();
-});
+});});
