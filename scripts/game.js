@@ -148,10 +148,6 @@ function makeTooltips() {
 function getMoneyCookie() {
 	var money = document.cookie.substr(document.cookie.indexOf("money=")+"money=".length, document.cookie.length);
 	var generatorList = $("#generators tr td");
-	for (var i = 0; i < generatorList.length; i++) {
-		console.log(generatorList[i]);
-	};
-	return;
 	if (money) {
 		for (var i = 0; i < money.length; i++) {
 			if (money[i]===";") {
