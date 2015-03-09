@@ -151,7 +151,8 @@ function getMoneyCookie() {
 		for (var i = 0; i < money.length; i++) {
 			if (money[i]===";") {
 				money = money.substr(0, i);
-
+				buildings = money.substr(i);
+				console.log(buildings);
 				break
 			}
 		};
@@ -176,11 +177,11 @@ function setMoneyCookie() {
 function buttonSetup() {
 	var save = $("#save");
 	save.click(setMoneyCookie);
-	/*var load = $("#load");
+	var load = $("#load");
 	load.click(function() {
 		player.money = 0
 		getMoneyCookie();
-	});*/
+	});
 	var getMoney = $("#basicmoney");
 	getMoney.click(function() {
 		player.money++;
