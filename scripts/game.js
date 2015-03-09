@@ -150,7 +150,7 @@ function getMoneyCookie() {
 	if (money) {
 		for (var i = 0; i < money.length; i++) {
 			if (money[i]===";") {
-				buildings = money.substr(i+"build="+2);
+				buildings = money.substr(i+"build=".length+2);
 				money = money.substr(0, i);
 				
 				console.log(buildings);
