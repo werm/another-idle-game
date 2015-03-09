@@ -27,10 +27,9 @@ function makeGenerator(name) {
 				player.money -= generatorTemplates[i].cost;
 				generators.push(generatorTemplates[i]);
 				generatorTemplates[i].cost = Math.floor(generatorTemplates[i].cost + generatorTemplates[i].cost * growthRate);
-				makeGeneratorList();
-				
+				return i;
 			}
-			return;
+			return -1;
 		}
 	};
 }
@@ -71,8 +70,9 @@ function makeGeneratorList() {
 	if (oldGenerators) {
 		for (var i = 0; i < oldGenerators.length; i++) {
 			for (var i2 = 0; i2 < oldGenerators[i].children.length; i2++) {
-				if (oldGenerators[i].children[i2].html() !== oldGenerators[i].children[i2].attr("name") && beingHovered === -1) {
-					beingHovered = i2;
+				var currentGenerator = $(oldGenerators[i].children[i2]);
+				if (beingHovered < 0 && currentGenerator.html() !== currentGenerator.attr("name")) {
+					beingHovered = (3*i)+i2;
 				}
 			};
 			oldGenerators[i].remove();
@@ -103,7 +103,12 @@ function makeGeneratorList() {
 		});
 		generatorObj.click(function() {
 			var jThis = $(this);
-			makeGenerator(jThis.attr("name"));
+			var madeGen = makeGenerator(jThis.attr("name"));
+			if (madeGen > -1) {
+				jThis.attr("cost", generatorTemplates[madeGen]);
+				makeGeneratorList();
+			}
+			
 		});
 		if (i === beingHovered) {
 			generatorObj.mouseenter();
@@ -145,6 +150,7 @@ function getMoneyCookie() {
 		for (var i = 0; i < money.length; i++) {
 			if (money[i]===";") {
 				money = money.substr(0, i);
+
 				break
 			}
 		};
