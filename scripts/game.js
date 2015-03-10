@@ -170,7 +170,7 @@ function getMoneyCookie() {
 		};
 	}
 }
-
+//
 function setMoneyCookie() {
 	var cookieString = "money=" + player.money
 	var expiryDate = ";expires=Fri, 31 Dec 9999 23:59:59 GMT"
