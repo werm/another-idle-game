@@ -148,7 +148,6 @@ function makeTooltips() {
 function getMoneyCookie() {
 	var money = document.cookie.substr(document.cookie.indexOf("money=")+"money=".length, document.cookie.length);
 	var generatorList = $("#generators tr td");
-	console.log(generatorList);
 	if (money) {
 		for (var i = 0; i < money.length; i++) {
 			if (money[i]===";") {
@@ -165,6 +164,7 @@ function getMoneyCookie() {
 			var buildingAmount = +buildings[i];
 			var buildingButton = generatorList[i];
 			for (var clicks = 0; clicks < buildingAmount; clicks++) {
+				console.log(i, "Boing!");
 				buildingButton.click();
 			};
 		};
