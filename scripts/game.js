@@ -201,9 +201,9 @@ function buttonSetup() {
 }
 // Starts the game
 function initGame() {
+	makeGeneratorList();
 	getMoneyCookie();
 	buttonSetup();
-	makeGeneratorList();
 	makeTooltips();
 	setInterval(activateGen, generatorSeconds*1000);
 	setInterval(updateDisplay, displaySeconds/10);
